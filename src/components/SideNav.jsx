@@ -4,12 +4,44 @@ import { Button } from "./Button";
 import { useState } from "react";
 
 const StyledWrapper = styled.div`
+  position: relative;
+  width: 30%;
+`;
+
+const StyledContent = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: start;
+  padding: 1rem;
   gap: 1rem;
+  z-index: 2;
+  scrollbar-width: none;
+  overflow-y: scroll;
+  height: calc(100vh - 110px);
   width: 100%;
-  max-width: 300px;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 5px;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background: #ffac00;
+    }
+  }
 `;
 
 export const SideNav = ({
@@ -34,17 +66,19 @@ export const SideNav = ({
 
   return (
     <StyledWrapper>
-      <button onClick={newChat}>New Chat</button>
-      {data?.map((chatEntry, index) => (
-        <Button
-          key={index}
-          index={index}
-          setHistory={setHistory}
-          text={`chat : ${chatEntry[0]?.content}`}
-          handleButtonClick={handleButtonClick}
-          isActive={activeIndex === index}
-        ></Button>
-      ))}
+      <StyledContent>
+        <button onClick={newChat}>New Chat</button>
+        {data?.map((chatEntry, index) => (
+          <Button
+            key={index}
+            index={index}
+            setHistory={setHistory}
+            text={`chat : ${chatEntry[0]?.content}`}
+            handleButtonClick={handleButtonClick}
+            isActive={activeIndex === index}
+          ></Button>
+        ))}
+      </StyledContent>
     </StyledWrapper>
   );
 };
