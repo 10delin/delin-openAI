@@ -1,37 +1,45 @@
 import PropTypes from "prop-types";
 import { styled } from "styled-components";
 import { Button } from "./Button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   gap: 1rem;
-  width: 50%;
+  width: 100%;
+  max-width: 300px;
 `;
 
-export const SideNav = ({ setHistory }) => {
+export const SideNav = ({
+  setHistory,
+  inputRef,
+  setStorageItem,
+  storageItem,
+}) => {
   const dataStorage = JSON.parse(localStorage?.getItem("chat"));
-  const [storageItem, setStorageItem] = useState(dataStorage);
   const [activeIndex, setActiveIndex] = useState(false);
   const handleButtonClick = (index) => {
     setActiveIndex(index);
   };
+  const data = dataStorage ? dataStorage : storageItem;
 
-  //   useEffect(() => {
-  //     const dataStorage = JSON.parse(localStorage?.getItem("chat"));
-  //     setStorageItem(dataStorage);
-  //   }, [storageItem]);
+  const newChat = () => {
+    setStorageItem([]);
+    setHistory([]);
+    setActiveIndex(false);
+    inputRef.current.value = "";
+  };
 
   return (
     <StyledWrapper>
-      {dataStorage?.map((chatEntry, index) => (
+      <button onClick={newChat}>New Chat</button>
+      {data?.map((chatEntry, index) => (
         <Button
           key={index}
           index={index}
           setHistory={setHistory}
-          setStorageItem={setStorageItem}
           text={`chat : ${chatEntry[0]?.content}`}
           handleButtonClick={handleButtonClick}
           isActive={activeIndex === index}
@@ -43,4 +51,7 @@ export const SideNav = ({ setHistory }) => {
 
 SideNav.propTypes = {
   setHistory: PropTypes.func.isRequired,
+  inputRef: PropTypes.object.isRequired,
+  setStorageItem: PropTypes.func.isRequired,
+  storageItem: PropTypes.array.isRequired,
 };

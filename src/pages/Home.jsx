@@ -1,11 +1,31 @@
 import { useRef, useState } from "react";
 import useLLM from "usellm";
 import { SideNav } from "../components/SideNav";
+import styled from "styled-components";
+
+const StyledWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  margin: 0;
+  color: white;
+`;
 
 export const Home = () => {
   const llm = useLLM({ serviceUrl: "https://usellm.org/api/llm" });
   const [history, setHistory] = useState([]);
+  const [storageItem, setStorageItem] = useState([]);
   const inputRef = useRef(null);
+
+  const saveDataInLocalStorage = () => {
+    const previousChat = localStorage.getItem("chat");
+    const chatArray = previousChat ? JSON.parse(previousChat) : [];
+    const updatedChat = JSON.stringify([...chatArray, [...history]]);
+    setStorageItem(updatedChat);
+    localStorage.setItem("chat", updatedChat);
+  };
 
   const handleClick = async () => {
     const userMessage = inputRef.current?.value;
@@ -26,30 +46,15 @@ export const Home = () => {
     }
   };
 
-  const saveDataInLocalStorage = () => {
-    const previousChat = localStorage.getItem("chat");
-    const chatArray = previousChat ? JSON.parse(previousChat) : [];
-    const updatedChat = JSON.stringify([...chatArray, [...history]]);
-    localStorage.setItem("chat", updatedChat);
-  };
-
-  const newChat = () => {
-    saveDataInLocalStorage();
-    setHistory([]);
-    inputRef.current.value = "";
-  };
-
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        fontFamily: "Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
-        gap: "5rem",
-      }}
-    >
-      <SideNav setHistory={setHistory} />
-      <div>
+    <StyledWrapper>
+      <SideNav
+        setHistory={setHistory}
+        setStorageItem={setStorageItem}
+        storageItem={storageItem}
+        inputRef={inputRef}
+      />
+      <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
         <h1>Chat with AI</h1>
         <input type="text" ref={inputRef} />
         <button onClick={handleClick}>chat</button>
@@ -61,8 +66,8 @@ export const Home = () => {
             </div>
           ))}
         </div>
-        <button onClick={newChat}>New Chat</button>
+        <button onClick={saveDataInLocalStorage}>Save Chat</button>
       </div>
-    </div>
+    </StyledWrapper>
   );
 };

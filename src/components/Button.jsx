@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
-import { useEffect } from "react";
 import styled from "styled-components";
 
 const StyledButton = styled.button`
   background-color: ${(props) => (props.isActive ? "#ffac00" : "black")};
+  border: 2px solid #474747;
 `;
 
 export const Button = ({
@@ -12,7 +12,6 @@ export const Button = ({
   text,
   isActive,
   handleButtonClick,
-  setStorageItem,
 }) => {
   const loadChatFromLocalStorage = (index) => {
     const chat = localStorage.getItem("chat");
