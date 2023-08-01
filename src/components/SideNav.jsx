@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 import { styled } from "styled-components";
-import { Button } from "./Button";
 import { useState } from "react";
+import { PastChat } from "./PastChat";
 
 const StyledWrapper = styled.div`
   position: relative;
-  width: 30%;
+  width: 25%;
 `;
 
 const StyledContent = styled.div`
@@ -17,7 +17,7 @@ const StyledContent = styled.div`
   justify-content: start;
   padding: 1rem;
   padding-top: 0;
-  gap: 1rem;
+  gap: 3rem;
   z-index: 2;
   scrollbar-width: none;
   overflow-y: scroll;
@@ -45,9 +45,30 @@ const StyledContent = styled.div`
   }
 `;
 
+const StyledHistoryContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 1rem;
+`;
+
+const StyledChatsContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+const StyledTitle = styled.h3`
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+`;
+
 const StyledButtonChat = styled.button`
   position: relative;
-  border: 2px solid #f5f5f5;
+  border: 1px solid #3d3d3d;
 `;
 
 export const SideNav = ({
@@ -73,17 +94,22 @@ export const SideNav = ({
   return (
     <StyledWrapper>
       <StyledContent>
-        <StyledButtonChat onClick={newChat}>New Chat</StyledButtonChat>
-        {data?.map((chatEntry, index) => (
-          <Button
-            key={index}
-            index={index}
-            setHistory={setHistory}
-            text={`chat : ${chatEntry[0]?.content}`}
-            handleButtonClick={handleButtonClick}
-            isActive={activeIndex === index}
-          ></Button>
-        ))}
+        <StyledButtonChat onClick={newChat}>➕Nuevo Chat</StyledButtonChat>
+        <StyledHistoryContent>
+          <StyledTitle>Historial Chats</StyledTitle>
+          <StyledChatsContent>
+            {data?.map((chatEntry, index) => (
+              <PastChat
+                key={index}
+                index={index}
+                setHistory={setHistory}
+                text={`${chatEntry[0]?.content}`}
+                handleButtonClick={handleButtonClick}
+                isActive={activeIndex === index}
+              ></PastChat>
+            ))}
+          </StyledChatsContent>
+        </StyledHistoryContent>
       </StyledContent>
     </StyledWrapper>
   );
