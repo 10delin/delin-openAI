@@ -12,7 +12,7 @@ const StyledWrapper = styled.div`
   gap: 2rem;
   width: 100%;
   color: white;
-  margin-top: 75px;
+  margin-top: 70px;
   height: calc(100vh - 75px);
 `;
 

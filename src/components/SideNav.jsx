@@ -16,6 +16,7 @@ const StyledContent = styled.div`
   flex-direction: column;
   justify-content: start;
   padding: 1rem;
+  padding-top: 0;
   gap: 1rem;
   z-index: 2;
   scrollbar-width: none;

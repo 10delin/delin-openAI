@@ -15,6 +15,7 @@ const StyledWrapper = styled.div`
   color: white;
   border-radius: 20px;
   margin: 25px;
+  margin-top: 0;
   overflow-y: scroll;
 
   &::-webkit-scrollbar {

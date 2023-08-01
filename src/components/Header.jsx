@@ -12,8 +12,6 @@ const StyledWrapper = styled.div`
   gap: 1rem;
   width: 100%;
   background-color: transparent;
-  border-bottom: 1px solid #353535;
-  box-shadow: 0 0 10px 0 rgba(83, 83, 83, 0.3);
   color: white;
   z-index: 3;
 `;
