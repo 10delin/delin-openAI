@@ -39,9 +39,14 @@ const StyledContent = styled.div`
 
   &:hover {
     &::-webkit-scrollbar-thumb {
-      background: #ffac00;
+      background: #ffffff;
     }
   }
+`;
+
+const StyledButtonChat = styled.button`
+  position: relative;
+  border: 2px solid #f5f5f5;
 `;
 
 export const SideNav = ({
@@ -67,7 +72,7 @@ export const SideNav = ({
   return (
     <StyledWrapper>
       <StyledContent>
-        <button onClick={newChat}>New Chat</button>
+        <StyledButtonChat onClick={newChat}>New Chat</StyledButtonChat>
         {data?.map((chatEntry, index) => (
           <Button
             key={index}

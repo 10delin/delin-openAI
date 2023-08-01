@@ -32,7 +32,7 @@ const StyledWrapper = styled.div`
 
   &:hover {
     &::-webkit-scrollbar-thumb {
-      background: #ffac00;
+      background: #ffffff;
     }
   }
 `;
@@ -44,6 +44,8 @@ const StyledWrapperForm = styled.form`
   flex-direction: row;
   width: 100%;
   justify-content: center;
+  align-items: center;
+  background-color: #353535;
 `;
 
 const InputContainer = styled.div`
@@ -51,22 +53,32 @@ const InputContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: row;
-  padding: 20px;
-  padding-bottom: 30px;
-  background-color: #353535;
+  padding: 20px 15px;
+`;
+
+const StyledInputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  border-radius: 25px;
+  border: 1px solid #ffffff;
+  font-size: 1rem;
+  overflow-wrap: break-word;
+  word-break: break-all;
+
+  &:focus-within {
+    border: 1px solid #ffac00;
+  }
 `;
 
 const StyledInput = styled.input`
-  width: 100%;
-  border-radius: 20px;
-  padding: 15px;
-  border: 1px solid white;
+  position: relative;
+  border: none;
   outline: none;
   font-size: 1rem;
-
-  &:focus {
-    border: 1px solid #ffac00;
-  }
+  background-color: transparent;
+  width: 85%;
+  padding: 15px;
+  border-radius: 25px;
 
   &::placeholder {
     color: #b3b3b3;
@@ -75,7 +87,7 @@ const StyledInput = styled.input`
 
 const StyledSendButton = styled.button`
   position: absolute;
-  right: 10px;
+  right: 25px;
   top: 50%;
   transform: translateY(-50%);
   outline: none;
@@ -130,14 +142,16 @@ export const ChatContainer = ({
       <Chat history={history} />
       <StyledWrapperForm>
         <InputContainer>
-          <StyledInput
-            type="text"
-            ref={inputRef}
-            placeholder="Introduce una petición aquí"
-          />
+          <StyledInputWrapper>
+            <StyledInput
+              type="text"
+              ref={inputRef}
+              placeholder="Introduce una petición aquí"
+            />
+          </StyledInputWrapper>
           <StyledSendButton onClick={handleClick}>➡</StyledSendButton>
-          <button onClick={saveDataInLocalStorage}>💾</button>
         </InputContainer>
+        <button onClick={saveDataInLocalStorage}>💾</button>
       </StyledWrapperForm>
     </StyledWrapper>
   );
