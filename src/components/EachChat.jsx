@@ -36,9 +36,20 @@ const StyledImage = styled.img`
   height: 45px;
   transition: all 0.3s ease-in-out;
 
-  &:hover {
-    transform: scale(1.1);
+  @keyframes breathe {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.3);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
+
+  animation: ${({ $loading }) =>
+    $loading ? `breathe 2s linear infinite` : `none`};
 `;
 
 export const EachChat = ({ chatEntry, loading }) => {
@@ -48,7 +59,7 @@ export const EachChat = ({ chatEntry, loading }) => {
         {chatEntry.role === "user" ? (
           "You: "
         ) : (
-          <StyledImage src={IconApp} alt="icon" />
+          <StyledImage $loading={loading} src={IconApp} alt="icon" />
         )}
       </StyledRole>
 

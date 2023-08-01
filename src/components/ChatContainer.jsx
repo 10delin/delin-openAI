@@ -70,6 +70,24 @@ const StyledInputWrapper = styled.div`
   &:focus-within {
     border: 1px solid #ffac00;
   }
+
+  ${({ $loading }) =>
+    $loading &&
+    `animation:pulse 1s infinite;
+     border: 1px solid #ffac00;
+    `}
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 230, 0, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(255, 172, 0, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 172, 0, 0);
+    }
+  }
 `;
 
 const StyledInput = styled.input`
@@ -83,7 +101,7 @@ const StyledInput = styled.input`
   border-radius: 25px;
 
   &::placeholder {
-    color: #b3b3b3;
+    ${({ $loading }) => ($loading ? `color: #e99d0f; : ` : `color: #b3b3b3;`)}
   }
 `;
 
@@ -155,12 +173,13 @@ export const ChatContainer = ({
       <Chat history={history} loading={status === "streaming"} />
       <StyledWrapperForm>
         <InputContainer>
-          <StyledInputWrapper>
+          <StyledInputWrapper $loading={status === "streaming"}>
             <StyledInput
               type="text"
               ref={inputRef}
               placeholder={placeHolderText}
               disabled={status === "streaming"}
+              $loading={status === "streaming"}
             />
           </StyledInputWrapper>
           <StyledSendButton onClick={handleClick}>➡</StyledSendButton>
