@@ -109,6 +109,11 @@ export const ChatContainer = ({
   const llm = useLLM({ serviceUrl: "https://usellm.org/api/llm" });
   const [status, setStatus] = useState("idle");
 
+  const placeHolderText =
+    status === "streaming"
+      ? "Espera a mi respuesta..."
+      : "Introduce una petición aquí";
+
   const saveDataInLocalStorage = (e) => {
     e.preventDefault();
 
@@ -153,7 +158,8 @@ export const ChatContainer = ({
             <StyledInput
               type="text"
               ref={inputRef}
-              placeholder="Introduce una petición aquí"
+              placeholder={placeHolderText}
+              disabled={status === "streaming"}
             />
           </StyledInputWrapper>
           <StyledSendButton onClick={handleClick}>➡</StyledSendButton>
