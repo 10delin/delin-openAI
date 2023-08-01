@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import IconApp from "../assets/iconApp.png";
+import { Spinner } from "./Spinner";
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -11,8 +12,8 @@ const StyledWrapper = styled.div`
   gap: 2rem;
   border-radius: 20px;
   padding: 15px;
-
-  ${({ $roleAI }) => $roleAI && `background-color: #242424;`}
+  background-color: #242424
+    ${({ $roleAI }) => $roleAI && `background-color: #353535;`};
 `;
 
 const StyledRole = styled.div`
@@ -40,9 +41,9 @@ const StyledImage = styled.img`
   }
 `;
 
-export const EachChat = ({ chatEntry }) => {
+export const EachChat = ({ chatEntry, loading }) => {
   return (
-    <StyledWrapper $roleAI={chatEntry.role === "assistant"}>
+    <StyledWrapper $roleAI={chatEntry.role === "user"}>
       <StyledRole>
         {chatEntry.role === "user" ? (
           "You: "
@@ -50,7 +51,12 @@ export const EachChat = ({ chatEntry }) => {
           <StyledImage src={IconApp} alt="icon" />
         )}
       </StyledRole>
-      <StyledContent> {chatEntry.content}</StyledContent>
+
+      {loading ? (
+        <Spinner />
+      ) : (
+        <StyledContent>{chatEntry.content}</StyledContent>
+      )}
     </StyledWrapper>
   );
 };
@@ -60,4 +66,5 @@ EachChat.propTypes = {
     role: PropTypes.string,
     content: PropTypes.string,
   }),
+  loading: PropTypes.bool.isRequired,
 };

@@ -2,6 +2,7 @@ import useLLM from "usellm";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Chat } from "./Chat";
+import { useState } from "react";
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -106,6 +107,7 @@ export const ChatContainer = ({
   setStorageItem,
 }) => {
   const llm = useLLM({ serviceUrl: "https://usellm.org/api/llm" });
+  const [status, setStatus] = useState("idle");
 
   const saveDataInLocalStorage = (e) => {
     e.preventDefault();
@@ -122,13 +124,18 @@ export const ChatContainer = ({
     const userMessage = inputRef.current?.value;
     if (!userMessage) return;
     userMessage && (inputRef.current.value = "");
+
     try {
       const newHistory = [...history, { role: "user", content: userMessage }];
-      setHistory(newHistory);
+      setHistory([...newHistory, []]);
+      setStatus("streaming");
       const { message } = await llm.chat({
         messages: newHistory,
         stream: true,
-        onStream: ({ message }) => setHistory([...newHistory, message]),
+        onStream: ({ message }) => {
+          setStatus("idle");
+          setHistory([...newHistory, message]);
+        },
       });
       setHistory([...newHistory, message]);
     } catch (error) {
@@ -139,7 +146,7 @@ export const ChatContainer = ({
 
   return (
     <StyledWrapper onSubmit={handleClick}>
-      <Chat history={history} />
+      <Chat history={history} loading={status === "streaming"} />
       <StyledWrapperForm>
         <InputContainer>
           <StyledInputWrapper>

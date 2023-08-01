@@ -14,11 +14,15 @@ const StyledWrapper = styled.div`
   margin: 25px;
 `;
 
-export const Chat = ({ history }) => {
+export const Chat = ({ history, loading }) => {
   return (
     <StyledWrapper>
       {history?.map((chatEntry, index) => (
-        <EachChat key={index} chatEntry={chatEntry} />
+        <EachChat
+          key={index}
+          chatEntry={chatEntry}
+          loading={loading && index === history.length - 1}
+        />
       ))}
     </StyledWrapper>
   );
@@ -31,4 +35,5 @@ Chat.propTypes = {
       content: PropTypes.string,
     })
   ),
+  loading: PropTypes.bool.isRequired,
 };
