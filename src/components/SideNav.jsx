@@ -5,7 +5,22 @@ import { PastChat } from "./PastChat";
 
 const StyledWrapper = styled.div`
   position: relative;
-  width: 25%;
+  box-sizing: border-box;
+
+  ${({ $sideNavVisible }) =>
+    $sideNavVisible
+      ? `
+      visibility: visible;
+      width: 25%;
+      transform: translate3d(0, 0, 0);
+      transition: transform 0.3s ease-in-out;
+      `
+      : `
+      transform: translate3d(-100%, 0, 0);
+      width: 0;
+      visibility: hidden;
+      transition: transform 0.3s ease-in-out;
+      `}
 `;
 
 const StyledContent = styled.div`
@@ -76,6 +91,7 @@ export const SideNav = ({
   inputRef,
   setStorageItem,
   storageItem,
+  sideNavVisible,
 }) => {
   const dataStorage = JSON.parse(localStorage?.getItem("chat"));
   const [activeIndex, setActiveIndex] = useState(false);
@@ -92,7 +108,7 @@ export const SideNav = ({
   };
 
   return (
-    <StyledWrapper>
+    <StyledWrapper $sideNavVisible={sideNavVisible}>
       <StyledContent>
         <StyledButtonChat onClick={newChat}>➕Nuevo Chat</StyledButtonChat>
         <StyledHistoryContent>
@@ -120,4 +136,5 @@ SideNav.propTypes = {
   inputRef: PropTypes.object.isRequired,
   setStorageItem: PropTypes.func.isRequired,
   storageItem: PropTypes.array.isRequired,
+  sideNavVisible: PropTypes.bool.isRequired,
 };

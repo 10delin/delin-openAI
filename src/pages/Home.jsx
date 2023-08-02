@@ -18,17 +18,19 @@ const StyledWrapper = styled.div`
 export const Home = () => {
   const [history, setHistory] = useState([]);
   const [storageItem, setStorageItem] = useState([]);
+  const [sideNavVisible, setSideNavVisible] = useState(true);
   const inputRef = useRef(null);
 
   return (
     <>
-      <Header />
+      <Header setSideNavVisible={setSideNavVisible} />
       <StyledWrapper>
         <SideNav
           setHistory={setHistory}
           setStorageItem={setStorageItem}
           storageItem={storageItem}
           inputRef={inputRef}
+          sideNavVisible={sideNavVisible}
         />
         <ChatContainer
           inputRef={inputRef}
