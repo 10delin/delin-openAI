@@ -21,6 +21,24 @@ const StyledWrapper = styled.div`
       visibility: hidden;
       transition: transform 0.3s ease-in-out;
       `}
+
+  @media (max-width: 980px) {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    height: 100vh;
+    z-index: 1;
+    background-color: #1e1e1e;
+
+    ${({ $sideNavVisible }) =>
+      $sideNavVisible
+        ? `
+        width: 100%;
+        `
+        : `
+        width: 0;
+        `}
+  }
 `;
 
 const StyledContent = styled.div`
@@ -57,6 +75,10 @@ const StyledContent = styled.div`
     &::-webkit-scrollbar-thumb {
       background: #ffffff;
     }
+  }
+
+  @media (max-width: 980px) {
+    padding: 0;
   }
 `;
 

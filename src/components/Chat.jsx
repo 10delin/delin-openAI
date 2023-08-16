@@ -26,6 +26,11 @@ const StyledContent = styled.div`
   padding: 15px;
   background-color: #242424;
   font-weight: 400;
+
+  @media (max-width: 980px) {
+    gap: 5px;
+    padding: 10px;
+  }
 `;
 
 const StyledImage = styled.img`

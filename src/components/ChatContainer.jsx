@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Chat } from "./Chat";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -111,7 +112,7 @@ const StyledSendButton = styled.button`
   top: 50%;
   transform: translateY(-50%);
   outline: none;
-  background-color: #3b3b3b;
+  background-color: #353535;
   font-size: 1rem;
   color: white;
   font-weight: bold;
@@ -133,24 +134,19 @@ export const ChatContainer = ({
       ? "Espera a mi respuesta..."
       : "Introduce una petición aquí";
 
-  const saveDataInLocalStorage = (e) => {
-    e.preventDefault();
-
-    const previousChat = localStorage.getItem("chat");
-    const chatArray = previousChat ? JSON.parse(previousChat) : [];
-    const updatedChat = JSON.stringify([...chatArray, [...history]]);
-    setStorageItem(updatedChat);
-    localStorage.setItem("chat", updatedChat);
-  };
-
   const handleClick = async (e) => {
     e.preventDefault();
     const userMessage = inputRef.current?.value;
     if (!userMessage) return;
+
     userMessage && (inputRef.current.value = "");
 
     try {
-      const newHistory = [...history, { role: "user", content: userMessage }];
+      const messageId = uuidv4();
+      const newHistory = [
+        ...history,
+        { id: messageId, role: "user", content: userMessage },
+      ];
       setHistory([...newHistory, []]);
       setStatus("streaming");
       const { message } = await llm.chat({
@@ -158,14 +154,39 @@ export const ChatContainer = ({
         stream: true,
         onStream: ({ message }) => {
           setStatus("idle");
-          setHistory([...newHistory, message]);
+          updateHistoryAndSave([...newHistory, message]);
         },
       });
-      setHistory([...newHistory, message]);
+      updateHistoryAndSave([...newHistory, message]);
     } catch (error) {
       console.error(error);
       window.alert("Something went wrong! " + error.message);
     }
+  };
+
+  const updateHistoryAndSave = (newHistory) => {
+    setHistory(newHistory);
+    saveDataInLocalStorage(newHistory);
+  };
+
+  const saveDataInLocalStorage = (chatData) => {
+    const previousChat = localStorage.getItem("chat");
+    const chatArray = previousChat ? JSON.parse(previousChat) : [];
+
+    const newChatArray = chatArray.map((item) => {
+      if (item.length > 0 && item[0].id === chatData[0].id) {
+        return chatData;
+      }
+      return item;
+    });
+
+    if (!newChatArray.some((item) => item[0].id === chatData[0].id)) {
+      newChatArray.push(chatData);
+    }
+
+    const updatedChat = JSON.stringify(newChatArray);
+    setStorageItem(updatedChat);
+    localStorage.setItem("chat", updatedChat);
   };
 
   return (
@@ -184,7 +205,6 @@ export const ChatContainer = ({
           </StyledInputWrapper>
           <StyledSendButton onClick={handleClick}>➡</StyledSendButton>
         </InputContainer>
-        <button onClick={saveDataInLocalStorage}>💾</button>
       </StyledWrapperForm>
     </StyledWrapper>
   );

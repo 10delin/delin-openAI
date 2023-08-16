@@ -14,7 +14,8 @@
     "react-dom": "^18.2.0",
     "react-spinners": "^0.13.8",
     "styled-components": "^6.0.5",
-    "usellm": "^0.13.0"
+    "usellm": "^0.13.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
