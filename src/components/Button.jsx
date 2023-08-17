@@ -1,10 +1,5 @@
 import PropTypes from "prop-types";
-import styled from "styled-components";
-
-const StyledButton = styled.button`
-  background-color: ${(props) => (props.isActive ? "#ffac00" : "black")};
-  border: 2px solid #474747;
-`;
+import { StyledButton } from "../styles/Button/StyledButton";
 
 export const Button = ({
   setHistory,

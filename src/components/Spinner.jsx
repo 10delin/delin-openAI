@@ -1,16 +1,9 @@
-import ClipLoader from "react-spinners/ClipLoader";
-import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const StyledWrapper = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: row;
-`;
-
-const StyledClipLoader = styled(ClipLoader)`
-  border-color: rgb(255 255 255) rgb(255 255 255) transparent !important;
-`;
+import {
+  StyledWrapper,
+  StyledClipLoader,
+} from "../styles/Spinner/StyledSpinner";
 
 export const Spinner = () => {
   return (
