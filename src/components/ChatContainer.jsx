@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Chat } from "./Chat";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useUser } from "@clerk/clerk-react";
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -128,6 +129,7 @@ export const ChatContainer = ({
 }) => {
   const llm = useLLM({ serviceUrl: "https://usellm.org/api/llm" });
   const [status, setStatus] = useState("idle");
+  const { user } = useUser();
 
   const placeHolderText =
     status === "streaming"
@@ -141,11 +143,19 @@ export const ChatContainer = ({
 
     userMessage && (inputRef.current.value = "");
 
+    console.log(user?.primaryEmailAddress.emailAddress);
+
     try {
       const messageId = uuidv4();
       const newHistory = [
         ...history,
-        { id: messageId, role: "user", content: userMessage },
+        {
+          user: user?.primaryEmailAddress.emailAddress,
+          userId: user?.id,
+          id: messageId,
+          role: "user",
+          content: userMessage,
+        },
       ];
       setHistory([...newHistory, []]);
       setStatus("streaming");

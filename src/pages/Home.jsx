@@ -40,10 +40,6 @@ export const Home = () => {
     return setSideNavVisible(false);
   }, [width]);
 
-  // if (!user) {
-  //   return <div>Loading...</div>;
-  // }
-
   return (
     <>
       <Header setSideNavVisible={setSideNavVisible} />

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const StyledWrapper = styled.div`
   position: absolute;
-  top: 0;
+  top: 5px;
   left: 0;
   display: flex;
   flex-direction: row;

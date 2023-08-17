@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import { useState } from "react";
 import { PastChat } from "./PastChat";
 import { useWindowSize } from "../hooks/useWindowSize";
+import { useUser } from "@clerk/clerk-react";
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -130,6 +131,7 @@ export const SideNav = ({
   };
   const data = dataStorage ? dataStorage : storageItem;
   const { width } = useWindowSize();
+  const { user } = useUser();
 
   const newChat = () => {
     setStorageItem([]);
@@ -139,6 +141,9 @@ export const SideNav = ({
 
     if (width < 980) setSideNavVisible(false);
   };
+  const filteredContent = data?.filter(
+    (chatEntry) => chatEntry[0]?.userId === user?.id
+  );
 
   return (
     <StyledWrapper $sideNavVisible={sideNavVisible}>
@@ -147,7 +152,7 @@ export const SideNav = ({
         <StyledHistoryContent>
           <StyledTitle>Historial Chats</StyledTitle>
           <StyledChatsContent>
-            {data?.map((chatEntry, index) => (
+            {filteredContent?.map((chatEntry, index) => (
               <PastChat
                 key={index}
                 index={index}
