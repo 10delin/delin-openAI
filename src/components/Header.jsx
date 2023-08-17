@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import iconApp from "../assets/iconApp.png";
 import PropTypes from "prop-types";
+import { UserButton, useUser } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
 
 const StyledWrapper = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   display: flex;
@@ -66,7 +68,18 @@ const StyledButton = styled.button`
   }
 `;
 
+const StyledContentUser = styled.div`
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  width: 20%;
+  margin-right: 20px;
+`;
+
 export const Header = ({ setSideNavVisible }) => {
+  const { isSignedIn } = useUser();
+  const navigate = useNavigate();
+
   const toggleSideNav = () => {
     setSideNavVisible((prev) => !prev);
   };
@@ -82,7 +95,13 @@ export const Header = ({ setSideNavVisible }) => {
         alt="icon"
         onClick={() => window.location.reload()}
       />
-      <StyledTitle>Profile</StyledTitle>
+      <StyledContentUser>
+        {isSignedIn ? (
+          <UserButton afterSignOutUrl="/" />
+        ) : (
+          <button onClick={() => navigate("/sign-in")}>Sign In</button>
+        )}
+      </StyledContentUser>
     </StyledWrapper>
   );
 };

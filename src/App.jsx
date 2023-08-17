@@ -1,5 +1,11 @@
-import { Home } from "./pages/Home";
+import { Header } from "./components/Header";
+import { AppRoutes } from "./routes";
 
 export const App = () => {
-  return <Home />;
+  return (
+    <>
+      <Header />
+      <AppRoutes />
+    </>
+  );
 };

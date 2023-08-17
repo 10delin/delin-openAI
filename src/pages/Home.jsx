@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { SideNav } from "../components/SideNav";
 import styled from "styled-components";
 import { ChatContainer } from "../components/ChatContainer";
 import { Header } from "../components/Header";
 import { useWindowSize } from "../hooks/useWindowSize";
+import { useUser } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -22,12 +24,25 @@ export const Home = () => {
   const [sideNavVisible, setSideNavVisible] = useState(false);
   const inputRef = useRef(null);
 
+  const { isLoaded, isSignedIn } = useUser();
+  const navigate = useNavigate();
+
   const { width } = useWindowSize();
+
+  useLayoutEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      navigate("/sign-in");
+    }
+  }, [isLoaded, isSignedIn, navigate]);
 
   useEffect(() => {
     if (width > 980) return setSideNavVisible(true);
     return setSideNavVisible(false);
   }, [width]);
+
+  // if (!user) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <>
