@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { styled } from "styled-components";
 import { useState } from "react";
 import { PastChat } from "./PastChat";
+import { useWindowSize } from "../hooks/useWindowSize";
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -78,7 +79,8 @@ const StyledContent = styled.div`
   }
 
   @media (max-width: 980px) {
-    padding: 0;
+    left: 5px;
+    padding: 30px 0;
   }
 `;
 
@@ -86,13 +88,14 @@ const StyledHistoryContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
-  gap: 1rem;
+  gap: 2rem;
+  padding: 5px 10px;
 `;
 
 const StyledChatsContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 20px;
 `;
 
 const StyledTitle = styled.h3`
@@ -101,6 +104,10 @@ const StyledTitle = styled.h3`
   color: #ffffff;
   margin: 0;
   padding: 0;
+
+  @media (max-width: 980px) {
+    font-size: 16px;
+  }
 `;
 
 const StyledButtonChat = styled.button`
@@ -114,6 +121,7 @@ export const SideNav = ({
   setStorageItem,
   storageItem,
   sideNavVisible,
+  setSideNavVisible,
 }) => {
   const dataStorage = JSON.parse(localStorage?.getItem("chat"));
   const [activeIndex, setActiveIndex] = useState(false);
@@ -121,12 +129,15 @@ export const SideNav = ({
     setActiveIndex(index);
   };
   const data = dataStorage ? dataStorage : storageItem;
+  const { width } = useWindowSize();
 
   const newChat = () => {
     setStorageItem([]);
     setHistory([]);
     setActiveIndex(false);
     inputRef.current.value = "";
+
+    if (width < 980) setSideNavVisible(false);
   };
 
   return (
@@ -144,6 +155,7 @@ export const SideNav = ({
                 text={`${chatEntry[0]?.content}`}
                 handleButtonClick={handleButtonClick}
                 isActive={activeIndex === index}
+                setSideNavVisible={setSideNavVisible}
               ></PastChat>
             ))}
           </StyledChatsContent>
@@ -159,4 +171,5 @@ SideNav.propTypes = {
   setStorageItem: PropTypes.func.isRequired,
   storageItem: PropTypes.array.isRequired,
   sideNavVisible: PropTypes.bool.isRequired,
+  setSideNavVisible: PropTypes.func.isRequired,
 };

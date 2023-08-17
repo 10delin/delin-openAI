@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { useWindowSize } from "../hooks/useWindowSize";
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -9,6 +10,7 @@ const StyledWrapper = styled.div`
   align-items: center;
   cursor: pointer;
   border-radius: 24px;
+  gap: 1rem;
   padding: 5px 10px;
 
   ${({ $isActive }) => $isActive && `background-color: #ffac00;`}
@@ -48,6 +50,10 @@ const StyledText = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
+
+  @media (max-width: 980px) {
+    font-size: 16px;
+  }
 `;
 
 export const PastChat = ({
@@ -56,12 +62,16 @@ export const PastChat = ({
   text,
   isActive,
   handleButtonClick,
+  setSideNavVisible,
 }) => {
+  const { width } = useWindowSize();
+
   const loadChatFromLocalStorage = (index) => {
     const chat = localStorage.getItem("chat");
     const chatArray = chat ? JSON.parse(chat) : [];
     setHistory(chatArray[index]);
     handleButtonClick(index);
+    if (width < 980) setSideNavVisible(false);
   };
 
   const deleteChat = () => {
@@ -78,6 +88,7 @@ export const PastChat = ({
       onClick={() => loadChatFromLocalStorage(index)}
       $isActive={isActive}
     >
+      💬
       <StyledText>{text}</StyledText>
       <StyledButton onClick={deleteChat} $isActive={isActive}>
         🗑
@@ -92,4 +103,5 @@ PastChat.propTypes = {
   text: PropTypes.string.isRequired,
   isActive: PropTypes.bool.isRequired,
   handleButtonClick: PropTypes.func.isRequired,
+  setSideNavVisible: PropTypes.func.isRequired,
 };

@@ -1,8 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SideNav } from "../components/SideNav";
 import styled from "styled-components";
 import { ChatContainer } from "../components/ChatContainer";
 import { Header } from "../components/Header";
+import { useWindowSize } from "../hooks/useWindowSize";
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -18,8 +19,15 @@ const StyledWrapper = styled.div`
 export const Home = () => {
   const [history, setHistory] = useState([]);
   const [storageItem, setStorageItem] = useState([]);
-  const [sideNavVisible, setSideNavVisible] = useState(true);
+  const [sideNavVisible, setSideNavVisible] = useState(false);
   const inputRef = useRef(null);
+
+  const { width } = useWindowSize();
+
+  useEffect(() => {
+    if (width > 980) return setSideNavVisible(true);
+    return setSideNavVisible(false);
+  }, [width]);
 
   return (
     <>
@@ -31,6 +39,7 @@ export const Home = () => {
           storageItem={storageItem}
           inputRef={inputRef}
           sideNavVisible={sideNavVisible}
+          setSideNavVisible={setSideNavVisible}
         />
         <ChatContainer
           inputRef={inputRef}
