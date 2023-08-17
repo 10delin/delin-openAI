@@ -2,7 +2,7 @@
 
 ## Description
 
-A simple smart chat using the data Api hook useLlm
+A simple smart chat using the data Api hook useLlm and Clerk
 
 ## Deployment In Vercel
 
