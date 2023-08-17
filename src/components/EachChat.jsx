@@ -14,6 +14,10 @@ const StyledWrapper = styled.div`
   padding: 15px;
   background-color: #242424
     ${({ $roleAI }) => $roleAI && `background-color: #353535;`};
+
+  @media (max-width: 980px) {
+    gap: 10px;
+  }
 `;
 
 const StyledRole = styled.div`
@@ -50,6 +54,11 @@ const StyledImage = styled.img`
 
   animation: ${({ $loading }) =>
     $loading ? `breathe 2s linear infinite` : `none`};
+
+  @media (max-width: 980px) {
+    width: 35px;
+    height: 35px;
+  }
 `;
 
 export const EachChat = ({ chatEntry, loading }) => {

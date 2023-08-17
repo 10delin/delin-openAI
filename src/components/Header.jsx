@@ -44,6 +44,10 @@ const StyledImg = styled.img`
   &:hover {
     transform: scale(1.1);
   }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const StyledButton = styled.button`
