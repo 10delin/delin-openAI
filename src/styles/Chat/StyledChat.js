@@ -53,8 +53,8 @@ export const StyledText = styled.div`
     cursor: pointer;
   }
 
-  p {
-    margin: 0;
+  p:first-child {
+    margin-bottom: 30px;
   }
 
   a:hover {

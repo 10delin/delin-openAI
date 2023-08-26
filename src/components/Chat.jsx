@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { EachChat } from "./EachChat";
 import IconApp from "../assets/iconApp.png";
+import { DEFAULT_CHAT_ENTRY, DEFAULT_CHAT_LINKS } from "../utils/model";
 
 import {
   StyledWrapper,
@@ -9,12 +10,11 @@ import {
   StyledText,
 } from "../styles/Chat/StyledChat";
 
-export const Chat = ({ history, loading }) => {
-  const defaultChatEntry =
-    "<p> Soy Delin OpenAI, tu colaborador creativo y útil. Tengo algunas limitaciones y no siempre acertaré, pero tus comentarios me ayudarán a mejorar. ¿No tienes claro por dónde empezar? Puedes probar lo siguiente: </p>" +
-    "\n\n- <a>Pregúntame sobre el significado de la vida.</a>" +
-    "\n- <a>Pregúntame sobre la inteligencia artificial.</a>" +
-    "\n- <a>Pregúntame sobre el futuro.</a>";
+export const Chat = ({ history, loading, setDefaultInput }) => {
+  const handleInput = (e) => {
+    setDefaultInput(e.target.innerText);
+  };
+
   return (
     <StyledWrapper>
       {history?.map((chatEntry, index) => (
@@ -27,7 +27,14 @@ export const Chat = ({ history, loading }) => {
       {history.length === 0 ? (
         <StyledContent>
           <StyledImage src={IconApp} alt="icon" />
-          <StyledText dangerouslySetInnerHTML={{ __html: defaultChatEntry }} />
+          <StyledText>
+            <p>{DEFAULT_CHAT_ENTRY}</p>
+            {DEFAULT_CHAT_LINKS.map((link, index) => (
+              <p key={index}>
+                <a onClick={handleInput}>{link}</a>
+              </p>
+            ))}
+          </StyledText>
         </StyledContent>
       ) : null}
     </StyledWrapper>
@@ -42,4 +49,5 @@ Chat.propTypes = {
     })
   ),
   loading: PropTypes.bool.isRequired,
+  setDefaultInput: PropTypes.func.isRequired,
 };

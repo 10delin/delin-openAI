@@ -73,4 +73,8 @@ export const StyledContentUser = styled.div`
   justify-content: right;
   align-items: center;
   margin-right: 20px;
+
+  button {
+    border: 2px solid transparent;
+  }
 `;

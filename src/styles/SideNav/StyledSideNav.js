@@ -108,5 +108,5 @@ export const StyledTitle = styled.h3`
 
 export const StyledButtonChat = styled.button`
   position: relative;
-  border: 1px solid #3d3d3d;
+  border: 2px solid #3d3d3d;
 `;
